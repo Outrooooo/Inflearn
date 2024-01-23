@@ -1,0 +1,47 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>구구단</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script> -->
+    <!--<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> -->
+  </head>
+  <body>
+    <div id="root">
+      <div>{{ n }}곱하기 {{ m }}는?</div>
+      <form v-on:submit="onSubmitForm">
+        <input type="number" ref="answer" v-model="value" />
+        <button type="submit">입력!</button>
+      </form>
+      <div id="result">{{result}}!</div>
+    </div>
+
+    <script>
+      const app = new Vue({
+        el: "#root",
+        data: {
+          n: Math.ceil(Math.random() * 9),
+          m: Math.ceil(Math.random() * 9),
+          result: "",
+          value: "",
+        },
+        methods: {
+          onSubmitForm(e) {
+            e.preventDefault(); // 페이지 새로고침을 막아야 하는 목적으로 사용
+            console.log(this.n, this.m, this.value);
+            if (this.n * this.m === parseInt(this.value)) {
+              this.result = "정답";
+              this.n = Math.ceil(Math.random() * 9);
+              this.m = Math.ceil(Math.random() * 9);
+              this.value = "";
+            } else {
+              this.result = "땡";
+              this.value = "";
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

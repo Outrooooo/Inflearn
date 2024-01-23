@@ -1,0 +1,46 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>끝말잇기</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <div>{{ word }}</div>
+      <form v-on:submit="onSubmitForm">
+        <input type="text" v-model="value" />
+        <button type="submit">입력</button>
+      </form>
+      <div>{{result}}</div>
+    </div>
+    <script>
+      const app = new Vue({
+        el: "#root",
+        data: {
+          word: "포비스",
+          result: "",
+          value: "",
+        },
+        methods: {
+          onSubmitForm(e) {
+            e.preventDefault();
+            if (this.word[this.word.length - 1] === this.value[0]) {
+              this.result = "딩동댕";
+              this.word = this.value;
+              this.value = "";
+            } else {
+              this.result = "땡";
+              this.value = "";
+            }
+          },
+          CallAPI(word) {
+            var api =
+              "https://krdict.korean.go.kr/api/search?key=9DF6B964F665F3ADC287D00C504422FC&type_search=search&part=word&q=" +
+              this.word;
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
