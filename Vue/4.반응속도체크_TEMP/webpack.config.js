@@ -29,6 +29,6 @@ module.exports = {
     ],
     output:{
         filename: '[name].js', // main.js에서 연결된 모든 파일의 결과가 여기서 설정한 이름으로 제작 '[name].js'
-        path: path.join(__dirname, 'dist'), // '/dist',
+        path: path.join(__dirname,'dist'), // 현재경로,'/dist', 
     },
 };
