@@ -1,88 +1,119 @@
-<!-- Vue내용을 다른 파일로 HTML,CSS 쉽게 관리하고 사용하게 해준다 -->
 <template>
-    <!--
-    v-show : 조건이 false인 경우 display = None, true인 경우 표시 (Tag는 존재)
-    v-if : (Tag자체 미존재), v-else-if, v-else 등 같이 사용할 수 있어 
-    -->
-    <div>
-        <div id="screen" :class="state" @click="onClickScreeen">{{ message }}</div>
-        <!-- div가 아닌 template으로 영역을 설정해도 가능, 단 template 다음 template은 사용 X-->
-        <template v-if="result.length"> 
-            <div>평균 시간 : {{ average }}ms</div>
-            <button @click="onReset">리셋</button>
-        </template>
-    </div>
-        
+        <div>
+            <!-- :class="{state:true, hello:false}" Class 사용 유무를 객체로 설정할 수 있다-->
+            <div id="computer"  v-bind:style="computedStyleObj"></div>
+            <div>
+                <button @click="onClickButton('바위')">바위</button>
+                <button @click="onClickButton('가위')">가위</button>
+                <button @click="onClickButton('보')">보</button>
+            </div>
+            <div>{{ result }}</div>
+            <div>현재 {{ score }} 점</div>
+        </div>
 </template>
 
 <script>
-    let startTime = 0;
-    let endTime = 0;
-    let timeout = null; 
+    // 의미가 불분명한경우 명명
+    const rspCoords = {
+      바위: '0',
+      가위:'-142px',
+      보:'-284px'
+    };
+
+    const scores = {
+      바위: '1',
+      가위:'0',
+      보:'-1'
+    };
+
+    const computerChoice = (imgCoord) => {
+        return Object.entries(rspCoords).find(function (v) {
+            return v[1] === imgCoord;
+        })[0];
+    };
+
+    let interval = null;
 
     export default {
-        // 화면이랑 관련 있는 경우에만 Data
         data(){
             return{
-                result:[],
-                state: 'waiting',
-                message:'클릭해서 시작하세요.'
+                imgCoord:rspCoords.바위,
+                result:'',
+                score:0
             }
         },
-        // Data를 가공한 후 화면에 보여줘야할 때 computed에서 작업(캐싱)
-        // Template 일부분이 변경될 경우에도 전체로 재실행이 되어, 불필요한 계산작업이 추가되어 비용 발생할 수 있어 computed에서 캐싱된 데이터를 적용
         computed:{
-            average(){    
-                // return this.result.reduce((a,c) => a+c,0) / result.length || 0
-                return this.result.length ? (this.result.reduce((a, c) => a + c, 0) / this.result.length) : 0; // 기본값 설정
+            computedStyleObj(){
+                return{
+                    background:`url('http://en.pimg.jp/023/182/267/1/23182267.jpg') no-repeat ${this.imgCoord} 0`,
+                };
             }
         },
         methods: {
-            onReest(){ 
-                this.result = []; // Init
+            onClickButton(choice){ // Param 설정 가능
+                clearInterval(interval); // 인터벌 멈춤
+                const myScore = scores[choice];
+                console.log(scores[choice]);
+                const cpuScore = scores[computerChoice(this.imgCoord)];
+                const diff = myScore - cpuScore;
+                if(diff === 0){
+                    this.result ='비겼습니다.';
+                }
+                // -1이나 2인경우
+                else if([-1,2].includes(diff)){
+                    this.result ='이겼습니다.';
+                    this.score += 1;
+                }
+                else{
+                    this.result ='졌습니다.';
+                    this.score -= 1;
+                }
+                setTimeout(() => {
+                    this.changeHand();
+                }, 1000);
             },
-            onClickScreeen(){
-                console.log(this.state)
-                if(this.state ==='waiting'){                    
-                    this.state ='ready';
-                    this.message ='초록색일 때 클릭하세요.'
-                    timeout = setTimeout(() => {
-                        this.state = 'now';
-                        this.message ='지금 클릭!';
-                        startTime = new Date();
-                    }, Math.floor(Math.random() * 1000) +2000);
+            changeHand(){
+                interval = setInterval(() => {
+                if(this.imgCoord === rspCoords.바위){
+                    this.imgCoord = rspCoords.가위;
                 }
-                else if(this.state ==='ready'){                    
-                    clearTimeout(timeout);
-                    this.state ='waiting';
-                    this.message ='너무 성급합니다. 초록색일 때 클릭하세요'
+                else if(this.imgCoord === rspCoords.가위){
+                    this.imgCoord = rspCoords.보;
                 }
-                else if(this.state ==='now'){
-                    endTime = new Date();
-                    this.state ='waiting';
-                    this.message ='클릭해서 다시 시작하세요.'
-                    this.result.push(endTime - startTime);
+                else if(this.imgCoord === rspCoords.보){
+                    this.imgCoord = rspCoords.바위;
                 }
+            }, 100);
             }
+        },        
+        // Life Cycle
+        // 컴포넌트가 생성할 때 (v-id true로 표시 시)
+        created(){
+            console.log('Created');
+        },
+        // Create 후 data, computed 등 계산 후 실제로 화면에 표시할 때
+        mounted(){
+            console.log('Mounted');
+            this.changeHand();
+        },
+        // Data가 변경되어 화면이 다시 변경될 때
+        updated(){
+            console.log('Updated');
+        },
+        beforeDestroy(){
+            clearInterval(interval);
+        },
+        // 컴포넌트가 제거될 때(v-id false로 미표시 시)
+        destroyed(){
+            console.log('Destroyed');
         }
     };
 </script>
 <!-- scoped 해당 컴포넌트에서만 사용되어지는 스타일 -->
 <style scoped>
-    #screen {
-        width:300px;
+    #computer{
+        width: 142px;
         height: 200px;
-        text-align: center;
-        user-select: none;
-    }
-    #screen.waiting{
-        background-color: aqua;
-    }
-    #screen.ready{
-        background-color: red;
-        color:white;
-    }
-    #screen.now{
-        background-color: greenyellow;
+        background-position: 0 0;
     }
 </style>
