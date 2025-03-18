@@ -1,9 +1,30 @@
 <template>
     <table>
-        <tr-component></tr-component>>
+        <!-- tr : Row -->
+        <tr-component v-for="(rowData, index) in tableData" :row-Data="rowdata" :row-index="index" :key="index"></tr-component>>
     </table>
-</template>>
+</template>
 
 <script>
-    import TrComponents from './TrComponents'
+    import TrComponent from './TrComponent.vue'
+
+    export default{
+        props:{
+            tableData: Array,
+        },
+        components:{
+            TrComponent,
+        },
+    };
 </script>
+<style>
+    table{
+        border-collapse: collapse;
+    }
+    td{
+        border:1px solid black;
+        width: 40px;
+        height: 40px;
+        text-align: center;
+    }
+</style>
