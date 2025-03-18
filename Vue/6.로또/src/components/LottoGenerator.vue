@@ -52,6 +52,8 @@
                 this.winBalls = [];
                 this.bonus = null;
                 this.redo = false;
+
+                // this.showBalls(); // watch 미사용 시 해당 위치에서 적용
            },
            showBalls(){
             for(let i = 0; i < this.winNumbers.length - 1; i++){ // var 사용 시 closer 문제가 생길 수 있어 let 사용
