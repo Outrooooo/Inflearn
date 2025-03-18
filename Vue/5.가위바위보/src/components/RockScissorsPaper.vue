@@ -91,8 +91,10 @@
         created(){
             console.log('Created');
         },
+        // aysnc -> await -> promise
         // Create 후 data, computed 등 계산 후 실제로 화면에 표시할 때
         mounted(){
+            promises
             console.log('Mounted');
             this.changeHand();
         },
