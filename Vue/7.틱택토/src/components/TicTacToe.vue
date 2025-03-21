@@ -6,9 +6,30 @@
     
 </template>
 
-<script>
-    import TableComponent from './TableComponent.vue';
+<script setup>
+    // provide로 inject 항목 사용할 수 있게
+    import {ref, provide} from 'vue';
+    import TableComponent from './TableComponent.vue';    
 
+    const turn = ref('O');
+
+    const changeTurn = () =>{
+        turn.value = turn.value === 'O' ? 'X' : 'O';
+    };
+
+    const tableData = ref([
+        ['', '', ''],
+        ['', '', ''],
+        ['', '', '']   
+    ]);
+
+    provide('turn',turn);
+    provide('changeTurn',changeTurn);
+    provide('tableData',tableData);
+
+    
+
+    /* VUE2 방식
     export default {
         components:{
             'table-component' :TableComponent,
@@ -40,6 +61,7 @@
           
         },
     };
+    */
 </script>
 
 <style scoped>

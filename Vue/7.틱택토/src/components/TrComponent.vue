@@ -1,7 +1,7 @@
 <template>
     <tr>
         <td-component v-for="(cellData, index) in rowData" :cell-Data="cellData" :cell-index="index" :row-index="rowIndex" :key="index"></td-component>
-    </tr>>
+    </tr>
 </template>
 
 <script>
