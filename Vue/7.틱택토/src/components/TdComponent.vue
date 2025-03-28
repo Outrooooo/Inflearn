@@ -6,7 +6,7 @@
     // inject로 provide 항목 사용
     import { inject } from 'vue';
 
-    defineProps({
+    const props = defineProps({
         cellData: String,
         rowIndex: Number,
         cellIndex: Number
@@ -15,17 +15,14 @@
     const turn = inject('turn');
     const tableData = inject('tableData');
     const changeTurn = inject('changeTurn');
+    const setTableData = inject('setTableData');
+    
 
     const onClickTd = () => {
         console.log('현재 턴:',turn.value);
-        /*
-        // tableData.value[this.rowIndex][this.cellIndex] = turn.value
-        tableData.value = tableData.value.map((row, rIndex) =>
-            rIndex === rowIndex
-            ? row.map((cell, cIndex) => (cIndex === cellIndex ? turn.value : cell))
-            : row
-        );
-        */
+        console.log('현재 인덱스:',props.rowIndex, props.cellIndex);
+        
+        setTableData(props.rowIndex,props.cellIndex);
         changeTurn(); // 턴 변경
     }
     /* VUE2 방식

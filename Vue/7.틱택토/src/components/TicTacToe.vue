@@ -23,9 +23,15 @@
         ['', '', '']   
     ]);
 
+    const setTableData = (rowIndex, cellIndex) =>{
+        tableData.value[rowIndex][cellIndex] = turn.value;
+    };
+
     provide('turn',turn);
-    provide('changeTurn',changeTurn);
+    provide('changeTurn',changeTurn);    
     provide('tableData',tableData);
+
+    provide('setTableData',setTableData);
 
     
 
