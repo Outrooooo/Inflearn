@@ -13,15 +13,34 @@
     });
 
     const turn = inject('turn');
+    const winner = inject('winner');
     const tableData = inject('tableData');
     const changeTurn = inject('changeTurn');
     const setTableData = inject('setTableData');
-    
+    const checkTableData = inject('checkTableData');   
 
     const onClickTd = () => {
         console.log('현재 턴:',turn.value);
         console.log('현재 인덱스:',props.rowIndex, props.cellIndex);
-        
+
+        console.log(checkTableData(props.rowIndex,props.cellIndex));
+
+        if( checkTableData(props.rowIndex,props.cellIndex) === true){
+            winner.value = turn.value;
+            turn.value = 'O';
+            tableData.value = [['', '', ''],['', '', ''],['', '', '']];
+
+            console.log('승자는 : ',winner.value);
+        }
+        else{
+            console.log('지거나 무승부 : ',winner.value);
+        }
+        // if(checkTableData() === true){
+        //     winner.value = turn.value;
+        //     turn.value = 'O';
+        //     tableData = [['', '', ''],['', '', ''],['', '', '']];
+        // }
+
         setTableData(props.rowIndex,props.cellIndex);
         changeTurn(); // 턴 변경
     }
