@@ -5,7 +5,6 @@
 <script setup>
     // inject로 provide 항목 사용
     import { inject } from 'vue';
-    import EventBus from '../EventBus';
     
     const props = defineProps({
         cellData: String,
