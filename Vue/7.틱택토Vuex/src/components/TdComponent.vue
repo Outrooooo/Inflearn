@@ -4,7 +4,8 @@
 
 <script setup>
     // inject로 provide 항목 사용
-    import { inject } from 'vue';
+    import { mapStores } from 'pinia';
+import { inject } from 'vue';
     
     const props = defineProps({
         cellData: String,
@@ -22,6 +23,10 @@
     const onClickTd = () => {
         console.log('현재 턴:',turn.value);
         console.log('현재 인덱스:',props.rowIndex, props.cellIndex);
+
+
+        // this.$store.commit('CLICK_CELL'); // 해당 방식으로 아래 내용 대체
+        // this.$store.commit(Mutation 명, data);
 
         // Click Cell Table Data Update
         if(setTableData(props.rowIndex,props.cellIndex) === true){
