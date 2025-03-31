@@ -97,7 +97,48 @@
             
         },
         methods: {
-           
+            // 20250331 EvnetBus 사용
+            onClickTd(){
+                console.log('현재 턴:',turn.value);
+                console.log('현재 인덱스:',props.rowIndex, props.cellIndex);
+
+                // Click Cell Table Data Update
+                if(setTableData(props.rowIndex,props.cellIndex) === true){
+                    return;
+                }
+
+                // 승리
+                if(checkTableData(props.rowIndex,props.cellIndex) === true){
+                    winner.value = turn.value;
+                    // winner = turn;
+                    turn.value = 'O';
+                    tableData.value = [['', '', ''],['', '', ''],['', '', '']];
+
+                    console.log('승자는 : ',winner.value);
+                }
+                // 무승부
+                else{
+                    let all = true; // all = true : 무승부
+                    tableData.value.forEach((row) => {
+                        row.forEach((cell) =>{
+                            if(!cell){
+                                all = false;
+                            }
+                        });
+                    });
+
+                    // 무승부인경우 초기화
+                    if(all){
+                        console.log('무승부');
+                        winner.value = '';
+                        turn.value = 'O';                
+                        tableData.value = [['', '', ''],['', '', ''],['', '', '']];
+                    }
+                    else{
+                        changeTurn(); // 턴 변경
+                    }
+                }
+            }
         },
         mounted(){
            
@@ -105,9 +146,13 @@
         beforeDestroy(){
           
         },
-        watch:{
-          
+        watch:{        
+
         },
+        // 20250331 EvnetBus 사용
+        created(){
+            EventBus.$on('clickTd', this.onClickTd);
+        }
     };
     */
 </script>
