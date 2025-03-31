@@ -24,7 +24,15 @@
     ]);
 
     const setTableData = (rowIndex, cellIndex) =>{
-        tableData.value[rowIndex][cellIndex] = turn.value;
+        // 이미 선택된 곳인경우
+        if(tableData.value[rowIndex][cellIndex]){
+            console.log('이미선택함');
+            return true;
+        }
+        else{
+            tableData.value[rowIndex][cellIndex] = turn.value;
+            return false;
+        }
     };
 
     // 승리 여부 체크

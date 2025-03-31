@@ -23,9 +23,13 @@
         console.log('현재 턴:',turn.value);
         console.log('현재 인덱스:',props.rowIndex, props.cellIndex);
 
-        setTableData(props.rowIndex,props.cellIndex); // Click Cell Table Data Update
+        // Click Cell Table Data Update
+        if(setTableData(props.rowIndex,props.cellIndex) === true){
+            return;
+        }
 
-        if( checkTableData(props.rowIndex,props.cellIndex) === true){
+        // 승리
+        if(checkTableData(props.rowIndex,props.cellIndex) === true){
             winner.value = turn.value;
             // winner = turn;
             turn.value = 'O';
@@ -33,11 +37,10 @@
 
             console.log('승자는 : ',winner.value);
         }
+        // 무승부
         else{
-            console.log('무승부 : ',winner.value);
-
             let all = true; // all = true : 무승부
-            tableData.array.forEach((row) => {
+            tableData.value.forEach((row) => {
                 row.forEach((cell) =>{
                     if(!cell){
                         all = false;
@@ -47,6 +50,7 @@
 
             // 무승부인경우 초기화
             if(all){
+                console.log('무승부');
                 winner.value = '';
                 turn.value = 'O';                
                 tableData.value = [['', '', ''],['', '', ''],['', '', '']];
