@@ -1,10 +1,9 @@
 <template>
     <div>
-        <table-component :tableData="tableData"/>
         <div>{{ turn }}님의 턴입니다.</div>
-        <div v-if="winner">{{ winner }}님의 승리입니다.</div>
+        <table-component :tableData="tableData"/>
+        <div v-if="winner">{{ winner }}님의 승리입니다.</div>        
     </div>
-    
 </template>
 
 <script setup>
@@ -14,9 +13,6 @@
 
     const turn = ref('O');
     const winner = ref('');
-
-    
-
     const changeTurn = () =>{
         turn.value = turn.value === 'O' ? 'X' : 'O';
     };

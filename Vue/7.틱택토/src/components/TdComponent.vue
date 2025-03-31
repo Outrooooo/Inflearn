@@ -23,26 +23,38 @@
         console.log('현재 턴:',turn.value);
         console.log('현재 인덱스:',props.rowIndex, props.cellIndex);
 
-        console.log(checkTableData(props.rowIndex,props.cellIndex));
+        setTableData(props.rowIndex,props.cellIndex); // Click Cell Table Data Update
 
         if( checkTableData(props.rowIndex,props.cellIndex) === true){
             winner.value = turn.value;
+            // winner = turn;
             turn.value = 'O';
             tableData.value = [['', '', ''],['', '', ''],['', '', '']];
 
             console.log('승자는 : ',winner.value);
         }
         else{
-            console.log('지거나 무승부 : ',winner.value);
-        }
-        // if(checkTableData() === true){
-        //     winner.value = turn.value;
-        //     turn.value = 'O';
-        //     tableData = [['', '', ''],['', '', ''],['', '', '']];
-        // }
+            console.log('무승부 : ',winner.value);
 
-        setTableData(props.rowIndex,props.cellIndex);
-        changeTurn(); // 턴 변경
+            let all = true; // all = true : 무승부
+            tableData.array.forEach((row) => {
+                row.forEach((cell) =>{
+                    if(!cell){
+                        all = false;
+                    }
+                });
+            });
+
+            // 무승부인경우 초기화
+            if(all){
+                winner.value = '';
+                turn.value = 'O';                
+                tableData.value = [['', '', ''],['', '', ''],['', '', '']];
+            }
+            else{
+                changeTurn(); // 턴 변경
+            }
+        }
     }
     /* VUE2 방식
     export default{
